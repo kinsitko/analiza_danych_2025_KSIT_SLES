@@ -4,18 +4,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import chi2_contingency
 from sklearn.feature_selection import mutual_info_classif
+from scipy.stats import spearmanr
 
-# 1. Korelacje Pearsona dla zmiennych numerycznych
-def pearson_corr_numeric(df):
-    num_cols = df.select_dtypes(include=['float64', 'int64']).columns
-    corr = df[num_cols].corr()
-    print("Korelacje Pearsona (numeryczne):")
-    print(corr)
-    plt.figure(figsize=(12,8))
-    sns.heatmap(corr, annot=True, cmap='coolwarm', fmt=".2f")
-    plt.title("Korelacje Pearsona między zmiennymi numerycznymi")
-    plt.show()
-    return corr
 
 # 2. Cramér’s V dla zmiennych kategorycznych
 def cramers_v(x, y):
@@ -56,3 +46,14 @@ def mutual_info_numeric_cat(df, target_cat_col):
     print(f"Informacja wzajemna między numerycznymi a '{target_cat_col}':")
     print(mi_series)
     return mi_series
+
+def spearman_corr_numeric(df):
+    num_cols = df.select_dtypes(include=['float64', 'int64']).columns
+    corr, pvals = spearmanr(df[num_cols])
+    corr_df = pd.DataFrame(corr, index=num_cols, columns=num_cols)
+    print("Korelacje Spearmana (numeryczne):")
+    print(corr_df)
+    sns.heatmap(corr_df, annot=True, cmap='coolwarm', fmt=".2f")
+    plt.title("Korelacje Spearmana między zmiennymi numerycznymi")
+    plt.show()
+    return corr_df
