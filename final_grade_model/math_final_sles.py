@@ -16,21 +16,20 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from import_data import load_kaggle_dataset
+from config_data import config
 
 df = load_kaggle_dataset(
-    dataset_name='adilshamim8/math-students',
-    zip_file_name='math-students.zip',
-    csv_file_name='Math-Students.csv',
-    data_path='data'
+    dataset_name=config["dataset_name"],
+    zip_file_name=config["zip_file_name"],
+    csv_file_name=config["csv_file_name"],
+    data_path=config["data_path"]
 )
 
 print(df.head())
 
-# Zmienna docelowa
 target = 'G3'
 df = df.drop(columns=['G1', 'G2'])
 
-# Podział zmiennych
 X = df.drop(columns=[target])
 y = df[target]
 
@@ -44,7 +43,7 @@ preprocessor = ColumnTransformer([
     ('cat', OneHotEncoder(drop='first', sparse_output=False), categorical_features)
 ])
 
-# Model bazowy do selekcji cech
+
 def select_features(X, y):
     pipe = Pipeline([
         ('preprocessor', preprocessor),
