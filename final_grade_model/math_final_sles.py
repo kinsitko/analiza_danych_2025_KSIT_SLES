@@ -12,7 +12,7 @@ df = load_kaggle_dataset(
 print(df.head())
 
 target = 'G3'
-df = df.drop(columns=['G1', 'G2'])
+# df = df.drop(columns=['G1', 'G2'])
 
 X = df.drop(columns=[target])
 y = df[target]
