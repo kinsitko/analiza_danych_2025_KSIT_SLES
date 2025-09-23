@@ -1,6 +1,24 @@
-from imports_bib import *
 from import_data import load_kaggle_dataset
-from config_data import config
+from config import config
+from pathlib import Path
+import joblib
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from scipy.stats import pearsonr, spearmanr
+from sklearn.feature_selection import SelectFromModel
+import seaborn as sns
+
+from xgboost import XGBRegressor
+import optuna
+import shap
+import matplotlib.pyplot as plt
+
+
 
 df = load_kaggle_dataset(
     dataset_name=config["dataset_name"],
@@ -12,7 +30,7 @@ df = load_kaggle_dataset(
 print(df.head())
 
 target = 'G3'
-# df = df.drop(columns=['G1', 'G2'])
+df = df.drop(columns=['G1', 'G2'])
 
 X = df.drop(columns=[target])
 y = df[target]
